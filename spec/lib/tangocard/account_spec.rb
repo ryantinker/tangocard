@@ -99,6 +99,46 @@ describe Tangocard::Account do
       end
     end
 
+    describe "cc_register" do
+      let(:client_ip) { Object.new }
+      let(:credit_card) { Object.new }
+      let(:cc_register_params) { { 'client_ip' => client_ip,
+                                   'credit_card' => credit_card,
+                                   'customer' => customer,
+                                   'account_identifier' => identifier } }
+      before do
+        @account = Tangocard::Account.send(:new, create_params)
+      end
+
+      context "cc_register succeeds" do
+        let(:response) { sample_cc_register_response(true) }
+
+        before do
+          mock(Tangocard::Raas).cc_register(cc_register_params) { response }
+        end
+
+        it "should return response from Tangocard::Raas.cc_register" do
+          @account.cc_register(client_ip, credit_card).should eq response
+        end
+
+        it "should not raise exception" do
+          lambda{ @account.cc_register(client_ip, credit_card) }.should_not raise_error
+        end
+      end
+
+      context "cc_register fails" do
+        let(:response) { sample_cc_register_response(false) }
+
+        before do
+          mock(Tangocard::Raas).cc_register(cc_register_params) { response }
+        end
+
+        it "should raise exception" do
+          lambda{ @account.cc_register(client_ip, credit_card) }.should raise_error
+        end
+      end
+    end
+
     describe "fund!" do
       pending "TODO"
     end
