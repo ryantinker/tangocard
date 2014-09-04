@@ -1,6 +1,18 @@
 class Tangocard::Raas
   include HTTParty
 
+  # Adds a credit card to an account. Returns Tangocard::Response object.
+  #
+  # Example:
+  #   >> Tangocard::Raas.cc_register(params)
+  #    => #<Tangocard::Response:0x007f9a6c4bca68 ...>
+  #
+  # Arguments:
+  #   params: (Hash - see https://github.com/tangocarddev/RaaS#register-a-credit-card-to-an-account for details)
+  def self.cc_register(params)
+    Tangocard::Response.new(post(endpoint + '/cc_register', {:body => params.to_json}.merge(basic_auth_param)))
+  end
+
   # Create a new account. Returns Tangocard::Response object.
   #
   # Example:
