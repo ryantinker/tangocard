@@ -29,6 +29,7 @@ end
 require 'tangocard/response'
 require 'tangocard/raas'
 require 'tangocard/account'
+require 'tangocard/account_credit_card_not_registered_exception'
 require 'tangocard/account_create_failed_exception'
 require 'tangocard/account_not_found_exception'
 require 'tangocard/brand'
