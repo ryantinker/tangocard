@@ -11,6 +11,28 @@ module TangocardHelpers
     sample_parsed_response['brands'].select{|b| b['description'] == 'Hulu+'}.first
   end
 
+  def sample_cc_register_response(success)
+    if success
+      raw_response = OpenStruct.new(
+        parsed_response: {
+          "success" => true,
+          "cc_token" => "152686945",
+          "active_date" => 1405444573
+        },
+        code: 200
+      )
+    else
+      raw_response = OpenStruct.new(
+        parsed_response: {
+            "success"=>false,
+            "error_message"=>"Failed"
+        },
+        code: 403
+      )
+    end
+    Tangocard::Response.new(raw_response)
+  end
+
   # return either a successful or failed find account response
   def sample_find_account_response(success)
     if success
