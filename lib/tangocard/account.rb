@@ -85,7 +85,7 @@ class Tangocard::Account
   #
   #   {
   #       'number' => '4111111111111111',
-  #       'expiration' => '01/17',
+  #       'expiration' => '2020-01',
   #       'security_code' => '123',
   #       'billing_address' => {
   #           'f_name' => 'Jane',
@@ -109,7 +109,9 @@ class Tangocard::Account
     if response.success?
       response
     else
-      raise Tangocard::AccountRegisterCreditCardFailedException, "#{response.error_message}"
+      error_message = response.error_message
+      error_message = response.error_message + " -- Invalid inputs: " + response.invalid_inputs.to_s if response.invalid_inputs
+      raise Tangocard::AccountRegisterCreditCardFailedException, error_message
     end
   end
 
