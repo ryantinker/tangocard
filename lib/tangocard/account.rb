@@ -121,6 +121,11 @@ class Tangocard::Account
   #   >> account.cc_fund('128.128.128.128', amount, security_code, cc_token)
   #    => #<Tangocard::Response:0x007fd68b2a9cc0 @code=200, @parsed_response={"success"=>true, "cc_token"=>"25992625", "active_date"=>1409949084}>
   #
+  # Arguments:
+  #   client_ip: (String)
+  #   amount: (Integer)
+  #   security_code: (Integer) for credit card security code
+  #   cc_token: (String) string of cc_token returned in the Tangocard::Response object of cc_register call
   def cc_fund(client_ip, amount, security_code, cc_token)
     params = {
       'client_ip' => client_ip,
