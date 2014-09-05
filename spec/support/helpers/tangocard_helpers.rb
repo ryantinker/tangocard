@@ -11,6 +11,28 @@ module TangocardHelpers
     sample_parsed_response['brands'].select{|b| b['description'] == 'Hulu+'}.first
   end
 
+  def sample_cc_fund_response(success)
+    if success
+      raw_response = OpenStruct.new(
+        parsed_response: {
+          "success" => true,
+          "fund_id" => "RF11-22222222-33",
+          "amount" => 100000
+        },
+        code: 200
+      )
+    else
+      raw_response = OpenStruct.new(
+        parsed_response: {
+            "success"=>false,
+            "error_message"=>"Failed"
+        },
+        code: 403
+      )
+    end
+    Tangocard::Response.new(raw_response)
+  end
+
   def sample_cc_register_response(success)
     if success
       raw_response = OpenStruct.new(
