@@ -71,11 +71,12 @@ class Tangocard::Account
     @available_balance
   end
 
-  # Register a credit card to the account.
+  # Register a credit card to the account. Returns Tangocard::Response object.
+  # Raises AccountRegisterCreditCardFailedException on failure.
   #
   # Example:
-  #   >> account.cc_register('128.128.128.128', Hash (see example below))
-  #    => #<Tangocard::Account:0x007f9a6fec0138 @customer="bonusly", @email="dev@bonus.ly", @identifier="test", @available_balance=0>
+  #   >> account.cc_register('128.128.128.128', Credit Card Hash (see example below))
+  #    => #<Tangocard::Response:0x007fd68b2a9cc0 @code=200, @parsed_response={"success"=>true, "cc_token"=>"25992625", "active_date"=>1409949084}>
   #
   # Arguments:
   #   client_ip: (String)
@@ -109,9 +110,31 @@ class Tangocard::Account
     if response.success?
       response
     else
-      error_message = response.error_message
-      error_message = response.error_message + " -- Invalid inputs: " + response.invalid_inputs.to_s if response.invalid_inputs
-      raise Tangocard::AccountRegisterCreditCardFailedException, error_message
+      raise Tangocard::AccountRegisterCreditCardFailedException, response.error_message
+    end
+  end
+
+  # Add funds to the account from a previously registered credit card.
+  # Raises AccountFundFailedException
+  #
+  # Example:
+  #   >> account.cc_fund('128.128.128.128', amount, security_code, cc_token)
+  #    => #<Tangocard::Response:0x007fd68b2a9cc0 @code=200, @parsed_response={"success"=>true, "cc_token"=>"25992625", "active_date"=>1409949084}>
+  #
+  def cc_fund(client_ip, amount, security_code, cc_token)
+    params = {
+      'client_ip' => client_ip,
+      'amount' => amount,
+      'security_code' => security_code,
+      'cc_token' => cc_token,
+      'customer' => customer,
+      'account_identifier' => identifier
+    }
+    response = Tangocard::Raas.cc_fund(params)
+    if response.success?
+      response
+    else
+      raise Tangocard::AccountFundFailedException, response.error_message
     end
   end
 
