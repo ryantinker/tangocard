@@ -30,6 +30,14 @@ describe Tangocard::Raas do
       stub(Tangocard::Response).new(raw_response) { response }
     end
 
+    describe "self.cc_fund" do
+      it "should POST to the RaaS API with appropriate params and wrap the result in a Tangocard::Response object" do
+        mock(params).to_json { json }
+        mock(Tangocard::Raas).post(@endpoint + '/cc_fund', {body: json}.merge(basic_auth_param)) { raw_response }
+        Tangocard::Raas.cc_fund(params).should == response
+      end
+    end
+
     describe "self.cc_register" do
       it "should POST to the RaaS API with appropriate params and wrap the result in a Tangocard::Response object" do
         mock(params).to_json { json }
