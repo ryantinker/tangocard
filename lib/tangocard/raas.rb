@@ -13,6 +13,18 @@ class Tangocard::Raas
     Tangocard::Response.new(post(endpoint + '/cc_register', {:body => params.to_json}.merge(basic_auth_param)))
   end
 
+  # Adds funds to an account from registered credit card. Returns Tangocard::Response object.
+  #
+  # Example:
+  #   >> Tangocard::Raas.cc_fund(params)
+  #    => #<Tangocard::Response:0x007f9a6c4bca68 ...>
+  #
+  # Arguments:
+  #   params: (Hash - see https://github.com/tangocarddev/RaaS#fund-a-platforms-account)
+  def self.cc_fund(params)
+    Tangocard::Response.new(post(endpoint + '/cc_fund', {:body => params.to_json}.merge(basic_auth_param)))
+  end
+
   # Create a new account. Returns Tangocard::Response object.
   #
   # Example:
