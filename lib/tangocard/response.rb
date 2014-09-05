@@ -11,11 +11,7 @@ class Tangocard::Response
   end
 
   def error_message
-    if invalid_inputs
-      parsed_response['error_message'] + " -- Invalid inputs: " + invalid_inputs.to_s
-    else
-      parsed_response['error_message']
-    end
+    parsed_response['error_message'].to_s + " -- Detailed response: " + parsed_response.to_s
   end
 
   def invalid_inputs
