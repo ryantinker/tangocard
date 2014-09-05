@@ -139,6 +139,50 @@ describe Tangocard::Account do
       end
     end
 
+    describe "cc_fund" do
+      let(:client_ip) { Object.new }
+      let(:cc_token) { Object.new }
+      let(:security_code) { Object.new }
+      let(:amount) { Object.new }
+      let(:cc_fund_params) { { 'client_ip' => client_ip,
+                               'cc_token' => cc_token,
+                               'security_code' => security_code,
+                               'amount' => amount,
+                               'customer' => customer,
+                               'account_identifier' => identifier } }
+      before do
+        @account = Tangocard::Account.send(:new, create_params)
+      end
+
+      context "cc_fund succeeds" do
+        let(:response) { sample_cc_fund_response(true) }
+
+        before do
+          mock(Tangocard::Raas).cc_fund(cc_fund_params) { response }
+        end
+
+        it "should return response from Tangocard::Raas.cc_register" do
+          @account.cc_fund(client_ip, amount, security_code, cc_token).should eq response
+        end
+
+        it "should not raise exception" do
+          lambda{ @account.cc_fund(client_ip, amount, security_code, cc_token) }.should_not raise_error
+        end
+      end
+
+      context "cc_fund fails" do
+        let(:response) { sample_cc_fund_response(false) }
+
+        before do
+          mock(Tangocard::Raas).cc_fund(cc_fund_params) { response }
+        end
+
+        it "should raise exception" do
+          lambda{ @account.cc_fund(client_ip, amount, security_code, cc_token) }.should raise_error
+        end
+      end
+    end
+
     describe "fund!" do
       pending "TODO"
     end
