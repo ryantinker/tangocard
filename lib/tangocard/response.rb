@@ -19,6 +19,10 @@ class Tangocard::Response
   end
 
   def cc_token
-    parsed_response['cc_token']
+    parsed_response['cc_token'] if parsed_response['cc_token']
+  end
+
+  def active_date
+    parsed_response['active_date'] if parsed_response['active_date']
   end
 end
