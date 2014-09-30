@@ -72,6 +72,7 @@ class Tangocard::Account
   end
 
   # Register a credit card to the account. Returns Tangocard::Response object.
+  # You'll want to store the response's cc_token and active_date, using response.cc_token and response.active_date
   # Raises AccountRegisterCreditCardFailedException on failure.
   #
   # Example:
@@ -124,7 +125,7 @@ class Tangocard::Account
   # Arguments:
   #   client_ip: (String)
   #   amount: (Integer)
-  #   security_code: (Integer) for credit card security code
+  #   security_code: (String) for credit card security code
   #   cc_token: (String) string of cc_token returned in the Tangocard::Response object of cc_register call
   def cc_fund(client_ip, amount, security_code, cc_token)
     params = {
